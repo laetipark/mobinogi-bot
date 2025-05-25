@@ -1,0 +1,10 @@
+{
+    "main": "mobinogi-bot.js",
+    "option": {
+        "apiLevel": 2,
+        "useUnifiedParams": false,
+        "useConsoleApi": true,
+        "useBabel": false,
+        "scriptPower": true
+    }
+}

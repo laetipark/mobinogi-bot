@@ -109,7 +109,7 @@ function getDeepHoleHeader(holeCount){
 
 function formatDeepHoleAlarm(alarm){
 	const header = getDeepHoleHeader(alarm.holeCount || 0);
-	return `- ${header}\n"${alarm.regionName}"에 ${alarm.time}까지 열려요!\n- 제보자: ${alarm.author}`;
+	return `${header}\n- "${alarm.regionName}"에 ${alarm.time}까지 열려요!\n- 제보자: ${alarm.author}`;
 }
 
 /**

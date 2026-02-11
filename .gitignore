@@ -1,5 +1,1 @@
-/global_modules/kakaolink.js
-/global_modules/kakaolink/
-/.idea/
-/global_modules/config.js
-/global_modules/secret.js
+/node_modules/config.js

@@ -1,0 +1,8 @@
+{
+  "name": "mobinogi-bot",
+  "version": "1.0.0",
+  "description": "MessengerBot script: mobinogi-bot",
+  "main": "mobinogi-bot.js",
+  "type": "commonjs",
+  "dependencies": {}
+}

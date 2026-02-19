@@ -52,8 +52,8 @@ const commandList = new CommandList();
 const regionList = new RegionList();
 const seeAllViewText = "\u200b".repeat(500);
 
-let chatRoomList = ["test1", "test2"];
-//let chatRoomList = ["guild_sexy", "guild_sexy_announce"];
+//let chatRoomList = ["test1", "test2"];
+let chatRoomList = ["guild_sexy", "guild_sexy_announce"];
 let devRoom = "test";
 let devMessage =
 	"* 개발자 :\nLaeti(아이라 서버/수도사)\n" +
@@ -74,6 +74,7 @@ const holeAlarmSyncIntervalMs = 60000;
 const holeAlarmSyncTickIntervalMs = 250;
 let holeAlarmTable = {};
 let holeAlarmSyncTimer = null;
+let holeAlarmProcessTimer = null;
 let holeAlarmNextSyncBoundaryMs = 0;
 let isHoleAlarmSyncStarted = false;
 let isHoleAlarmSyncStartLogged = false;
@@ -97,6 +98,11 @@ function getAlarmTime(time){
 	h = h < 10 ? `0${h}` : h;
 	m = m < 10 ? `0${m}` : m;
 	return `${h}:${m}`;
+}
+
+function getAlarmDate(time){
+	const date = new Date(time);
+	return `${date.getFullYear()}-${padNumber(date.getMonth() + 1)}-${padNumber(date.getDate())} ${padNumber(date.getHours())}:${padNumber(date.getMinutes())}`;
 }
 
 function hasCommonChars(input, regionName, minCount){
@@ -254,9 +260,6 @@ function clearHoleAlarmEntry(alarmId){
 	const alarm = holeAlarmTable[alarmId];
 	if(!alarm){
 		return;
-	}
-	if(alarm.intervalId){
-		clearInterval(alarm.intervalId);
 	}
 	delete holeAlarmTable[alarmId];
 }
@@ -454,6 +457,26 @@ function processHoleAlarmEntry(alarmId){
 	}
 }
 
+function processAllHoleAlarmEntries(){
+	const alarmIds = Object.keys(holeAlarmTable);
+	for(let i = 0 ; i < alarmIds.length ; i++){
+		processHoleAlarmEntry(Number(alarmIds[i]));
+	}
+}
+
+function ensureHoleAlarmProcessTimer(){
+	if(holeAlarmProcessTimer){
+		return;
+	}
+	holeAlarmProcessTimer = setInterval(() => {
+		try{
+			processAllHoleAlarmEntries();
+		}catch(e){
+			console.error("[hole-alarm] Failed to process alarm entries: " + e);
+		}
+	}, holeAlarmCheckIntervalMs);
+}
+
 function registerHoleAlarmEntry(alarm){
 	if(!alarm || alarm.id == null){
 		return;
@@ -464,16 +487,10 @@ function registerHoleAlarmEntry(alarm){
 	}
 	
 	const previous = holeAlarmTable[alarmId];
-	if(previous && previous.intervalId){
-		clearInterval(previous.intervalId);
-	}
 	
 	holeAlarmTable[alarmId] = {
 		data : alarm,
-		isAbyssPreAlertSent : previous ? previous.isAbyssPreAlertSent : false,
-		intervalId : setInterval(() => {
-			processHoleAlarmEntry(alarmId);
-		}, holeAlarmCheckIntervalMs)
+		isAbyssPreAlertSent : previous ? previous.isAbyssPreAlertSent : false
 	};
 	
 	processHoleAlarmEntry(alarmId);
@@ -506,6 +523,7 @@ function startHoleAlarmSync(){
 	if(holeAlarmSyncTimer){
 		clearInterval(holeAlarmSyncTimer);
 	}
+	ensureHoleAlarmProcessTimer();
 
 	try{
 		syncHoleAlarmTable();
@@ -602,7 +620,7 @@ function handleAbyssHoleCommand(msg, room, args){
 		for(let i = 0 ; i < previewCount ; i++){
 			const alarm = currentAbyssAlarms[i];
 			const time = getAbyssOpenMillisFromTableRow(alarm);
-			output += `- ${time ? getAlarmTime(time) : "-"}\n`;
+			output += `- ${time ? getAlarmDate(time) : "-"}\n`;
 		}
 		if(currentAbyssAlarms.length > previewCount){
 			output += `- ... 외 ${currentAbyssAlarms.length - previewCount}개`;

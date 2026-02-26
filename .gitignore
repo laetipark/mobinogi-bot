@@ -1,2 +1,8 @@
 /node_modules/config.js
 /log.json
+
+# AI assistant rules (commit project, ignore local)
+/.aiassistant/rules/local/
+/.aiassistant/rules/local/**
+!/.aiassistant/rules/project/
+!/.aiassistant/rules/project/**

@@ -55,6 +55,9 @@ const seeAllViewText = "\u200b".repeat(500);
 //let chatRoomList = ["test1", "test2"];
 let chatRoomList = ["guild_sexy", "guild_sexy_announce"];
 let devRoom = "test";
+const dawnQuietStartHour = 0;
+const dawnQuietEndHour = 6;
+const announceRoomKeyword = "_announce";
 let devMessage =
 	"* 개발자 :\nLaeti(아이라 서버/수도사)\n" +
 	"* 연락처 :\nhttps://open.kakao.com/me/laetipark";
@@ -241,9 +244,28 @@ function normalizeRegionName(inputRegion){
 				hasCommonChars(inputRegion, regionList.senmaiPlain, 2) ? regionList.senmaiPlain : "";
 }
 
+function isInDawnQuietHours(){
+	const hour = new Date().getHours();
+	if(dawnQuietStartHour <= dawnQuietEndHour){
+		return hour >= dawnQuietStartHour && hour < dawnQuietEndHour;
+	}
+	return hour >= dawnQuietStartHour || hour < dawnQuietEndHour;
+}
+
+function shouldSkipChatRoom(room){
+	return isInDawnQuietHours() && room && room.indexOf(announceRoomKeyword) > -1;
+}
+
+function sendToChatRoom(room, message){
+	if(!room || shouldSkipChatRoom(room)){
+		return;
+	}
+	bot.send(room, message);
+}
+
 function broadcastToChatRooms(message){
 	for(let i = 0 ; i < chatRoomList.length ; i++){
-		bot.send(chatRoomList[i], message);
+		sendToChatRoom(chatRoomList[i], message);
 	}
 }
 
@@ -932,18 +954,18 @@ function onCommand(msg){
 	switch(command){
 		case commandList.party.name:
 			if(chatRoomList.includes(room)){
-				bot.send(chatRoomList[0], `[파티 모집 - by. ${author.name}]\n${args.join(" ")}`);
+				sendToChatRoom(chatRoomList[1], `[파티 모집 - by. ${author.name}]\n${args.join(" ")}`);
 			}
 			break;
 		case commandList.mafia.name:
 			if(chatRoomList.includes(room)){
-				bot.send(chatRoomList[0], `[마피아 메시지 - by. ${author.name}]\n${args.join(" ")}`);
+				sendToChatRoom(chatRoomList[0], `[마피아 메시지 - by. ${author.name}]\n${args.join(" ")}`);
 			}
 			break;
 		case commandList.dev.name:
 			if(chatRoomList.includes(room)){
 				for(let i = 0 ; i < chatRoomList.length ; i++){
-					bot.send(chatRoomList[i], `[개발 메시지] ${args.join(" ")}\n` + devMessage);
+					sendToChatRoom(chatRoomList[i], `[개발 메시지] ${args.join(" ")}\n` + devMessage);
 				}
 			}
 			break;

@@ -10,8 +10,9 @@ This assistant must use `.aiassistant/rules/project` as the shared rule source.
 Read in this order:
 1. `project/README.md`
 2. `project/architecture-overview.md`
-3. `project/bot-development-guide.md`
-4. `project/runtime-operations-guide.md`
+3. `project/text-encoding-policy.md`
+4. `project/bot-development-guide.md`
+5. `project/runtime-operations-guide.md`
 
 ## Optional Local Rules (Git-safe template)
 Load only when needed for local environment or deployment details:

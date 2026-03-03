@@ -18,8 +18,10 @@ Shared rules for assistants working on `MessengerBot`.
 
 ## Read Order
 1. `architecture-overview.md`
-2. `bot-development-guide.md`
-3. `runtime-operations-guide.md`
+2. `text-encoding-policy.md`
+3. `quality-guardrails.md`
+4. `bot-development-guide.md`
+5. `runtime-operations-guide.md`
 
 ## Working Rules
 - Preserve existing command triggers unless a change is explicitly requested.

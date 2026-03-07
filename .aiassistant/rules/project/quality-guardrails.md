@@ -8,6 +8,7 @@ apply: always
 - Prevent encoding breakage in bot code and message templates.
 - Prevent unnecessary Unicode escape usage in readable strings.
 - Keep bot command execution responsive and predictable.
+- Keep code documentation consistent and maintainable.
 
 ## Encoding Guardrails
 - Save edited files as UTF-8.
@@ -29,8 +30,16 @@ apply: always
 - Preserve existing command triggers and response schema unless explicitly changed.
 - Keep alarm scheduler behavior deterministic (KST, interval, quiet-hour rules).
 
+## Commenting Guardrails
+- Add JSDoc to changed or newly added top-level variables/constants/functions.
+- Include `@param`, `@returns`, `@type` tags where applicable.
+- Keep one blank line between adjacent JSDoc blocks for readability.
+- Add line/block comments inside functions for non-trivial branches, state changes, and API calls.
+- Do not add redundant comments that only restate code literally.
+
 ## Validation Checklist
 - Unicode escape scan: `rg -n "\\\\u[0-9a-fA-F]{4}" .`
-- Garbled text scan: `rg -n "占? .`
+- Garbled text scan: `rg -n "�" .`
+- JSDoc tag scan: `rg -n "@param|@returns|@type" node_modules/mobinogi-*.js mobinogi-bot.js`
 - Basic syntax/runtime check in bot runtime-compatible environment.
 - Smoke-check major commands and one alarm cycle after behavior changes.

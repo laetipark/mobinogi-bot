@@ -9,6 +9,12 @@ apply: always
 - Keep function names intention-revealing and command-focused.
 - Avoid large in-place rewrites; make incremental changes.
 
+## Documentation Style
+- Add JSDoc for module-level variables/constants/functions that are changed.
+- For JSDoc, prefer explicit tags (`@type`, `@param`, `@returns`) and keep blocks separated with a blank line.
+- Inside functions, add concise line/block comments for logic-heavy branches and side effects.
+- Avoid comment noise; explain intent and behavior, not obvious syntax.
+
 ## Command Handling
 - Keep command aliases and trigger strings backward compatible.
 - Keep parsing defensive against malformed user input.

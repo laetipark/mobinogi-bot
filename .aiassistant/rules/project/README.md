@@ -20,14 +20,16 @@ Shared rules for assistants working on `MessengerBot`.
 1. `architecture-overview.md`
 2. `text-encoding-policy.md`
 3. `quality-guardrails.md`
-4. `bot-development-guide.md`
-5. `runtime-operations-guide.md`
+4. `messengerbot-behavior-contract.md`
+5. `bot-development-guide.md`
+6. `runtime-operations-guide.md`
 
 ## Working Rules
 - Preserve existing command triggers unless a change is explicitly requested.
 - Treat alarm time calculations (KST / repeat intervals / quiet hours) as behavior-sensitive.
 - Avoid introducing Node-only runtime assumptions without checking messenger bot compatibility.
 - Log or message format changes should be documented before rollout when user-facing.
+- For notice/event list and watcher logic, follow `messengerbot-behavior-contract.md` as source of truth.
 
 ## Maintenance Rules
 - Keep conventions stable for existing bot commands.

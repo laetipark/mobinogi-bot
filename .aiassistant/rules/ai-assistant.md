@@ -12,8 +12,9 @@ Read in this order:
 2. `project/architecture-overview.md`
 3. `project/text-encoding-policy.md`
 4. `project/quality-guardrails.md`
-5. `project/bot-development-guide.md`
-6. `project/runtime-operations-guide.md`
+5. `project/messengerbot-behavior-contract.md`
+6. `project/bot-development-guide.md`
+7. `project/runtime-operations-guide.md`
 
 ## Optional Local Rules (Git-safe template)
 Load only when needed for local environment or deployment details:

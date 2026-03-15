@@ -1150,6 +1150,7 @@ function createHoleAlarmService(options){
 				msg.reply(staticText.getDeepHoleUsageText());
 				return;
 			}
+			const underThirtyMinuteGuide = minutes >= 31 ? "\n- 30분 미만 심구 명령어도 작성 가능해요." : "";
 			
 			const values = Object.values(regionList);
 			const lastRegion = values[values.length - 1];
@@ -1176,6 +1177,7 @@ function createHoleAlarmService(options){
 					const sameCountText =
 						`${formatDeepHoleAlarmFromTable(existingRegionAlarm)}\n` +
 						`- 같은 심구 개수(${normalizedHoleCount})로 이미 등록되어 있어 갱신하지 않았어요.` +
+						`${underThirtyMinuteGuide}` +
 						`${seeAllViewText}\n\n${deepHoleTip}`;
 					broadcastToChatRooms(sameCountText);
 					return;
@@ -1209,7 +1211,7 @@ function createHoleAlarmService(options){
 				const alarmText = formatDeepHoleAlarmFromTable(createResult.alarm);
 				const multiCommandGuide = normalizedHoleCount === 1 ? `\n\n${staticText.getDeepHoleMultiCommandGuideText()}` : "";
 				const updatedText = isUpdated ? "\n- 같은 지역 기존 알림을 새 심구 개수로 갱신했어요." : "";
-				const outputText = `${alarmText}${updatedText}${multiCommandGuide}${seeAllViewText}\n\n${deepHoleTip}`;
+				const outputText = `${alarmText}${updatedText}${underThirtyMinuteGuide}${multiCommandGuide}${seeAllViewText}\n\n${deepHoleTip}`;
 				
 				// 관리 채팅방에서 실행한 경우에만 전체 브로드캐스트한다.
 				const isBroadcastTargetRoom = shouldBroadcastFromRoom(room);
